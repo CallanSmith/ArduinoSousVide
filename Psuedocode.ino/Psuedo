@@ -1,0 +1,13 @@
+void setup() {
+// tempature sensor turns on
+}
+void loop() {
+// read petentionmeter for tempature target
+// Display target and actual
+// When desired tempatuer of water is reached
+// then piezzo buzzer buzzes
+// when piezzo buzzer buzzes
+// then timer will start    
+// if tempature of water goes below desired tempature
+// then piezzo buzzer will buzz
+}
