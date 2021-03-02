@@ -12,3 +12,4 @@ I added a button to the assembly that would turn the tempature sensor on.
 Also, I added a Led that would turn on when the tempature reached the desired heat.
 I am not totally sure whether we will be able to finish on time or not.
 ### Picture of the Current Onshape
+![The Progress I made](images/OnshapeProgress#1.PNG)
