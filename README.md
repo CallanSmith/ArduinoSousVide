@@ -13,5 +13,6 @@ Also, I added a Led that would turn on when the tempature reached the desired he
 I am not totally sure whether we will be able to finish on time or not.
 ### Pictures of the Current Onshape
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/zoomedoutversionof%231.PNG" width="500">
+
 ### This is a zoomed in version so you can see the progress I made
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/OnshapeProgress%231.PNG" width="500">
