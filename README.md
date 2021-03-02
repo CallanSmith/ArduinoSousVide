@@ -11,5 +11,7 @@ The Psuedo code gives us a clear outline for the code, which will help greatly i
 I added a button to the assembly that would turn the tempature sensor on.
 Also, I added a Led that would turn on when the tempature reached the desired heat.
 I am not totally sure whether we will be able to finish on time or not.
-### Picture of the Current Onshape
+### Pictures of the Current Onshape
+<img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/zoomedoutversionof%231.PNG" width="500">
+### This is a zoomed in version so you can see the progress I made
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/OnshapeProgress%231.PNG" width="500">
