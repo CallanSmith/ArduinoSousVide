@@ -17,5 +17,7 @@ I am not totally sure whether we will be able to finish on time or not.
 ### This is a zoomed in version so you can see the progress I made
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/OnshapeProgress%231.PNG" width="500">
 
-### Wiring for Arduino Sous Vide
-The wiring for the Sous Vide is almost completed, however I ran into the probem of not having the correct resistor. The correct resistor will be here, and I will be able to finish the wiring.
+### Sous Vide progress
+
+### Picture of Temp sensor running
+<img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/TempSensorWorking.png" width="500">
