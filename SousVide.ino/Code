@@ -1,4 +1,4 @@
-
+#include <LiquidCrystal.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #define ONE_WIRE_BUS 8       //Temp sensor data wire will be connected to DP 8
@@ -6,6 +6,8 @@
 OneWire oneWire(ONE_WIRE_BUS);
 
 DallasTemperature sensors(&oneWire);
+
+LiquidCrystal lcd (12,11,5,4,3,2);
 
 float tempC = 0;
 float tempF = 0;
@@ -20,6 +22,7 @@ void setup() {
   analogWrite(3, 0);
   Serial.begin(9600);
 
+  lcd.begin (16,2);
 }
 
 void loop() {
@@ -32,4 +35,12 @@ void loop() {
   delay(1000);
  Serial.println(tempF);
 
+lcd.setCursor (0,0);
+lcd.print ("Arduino");
+delay (1500);
+lcd.setCursor (0,1);
+lcd.print (" Sous Vide") ;  
+delay (2000);
+lcd.clear();
+delay (3000);
 }
