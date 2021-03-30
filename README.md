@@ -28,3 +28,14 @@ I made a final box that has connecters and has the correct demensions and should
 
 ### Picture of Temp sensor running
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/TempSensorWorking.png" width="500">
+
+
+### Hows the project going?  Are you on time?
+ For the coding part of the project I feel like I am on time. I have connected the Temp sesnor to the LCD and it is printing the reading.
+ 
+ 
+### What major obstacle is keeping you from making better progress on your project?
+ For the coding, I am trying to figure out how to code a timer to start when the tempature reading reaches a certain tempature. I coded a timer, but the tempature sensor code is connected to a different library, so im not sure to code that.
+ 
+ ###  "When I return from Spring break
+I will add a piezo buzzer to the temp sesnor, so it will be able to alert the user when their deeisred tempature has been reached, and when the timer is up.
