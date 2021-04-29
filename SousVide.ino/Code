@@ -1,46 +1,85 @@
-#include <LiquidCrystal.h>
+float tempC = 0;
+float tempF = 0;
+int tempVal = 0;
+long startTime;
+const int LED_PIN =  13;   // the number of the LED pin
+int timerMode = 0;
+const int BUZZER_PIN = 9;
+#include <LiquidCrystal_I2C.h>
+#include <Wire.h> 
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #define ONE_WIRE_BUS 8       //Temp sensor data wire will be connected to DP 8
-
 OneWire oneWire(ONE_WIRE_BUS);
 
 DallasTemperature sensors(&oneWire);
 
-LiquidCrystal lcd (12,11,5,4,3,2);
+LiquidCrystal_I2C lcd(0x3f, 16, 2);
 
-float tempC = 0;
-float tempF = 0;
-
-
+// variables will change:
 
 void setup() {
-  // put your setup code here, to run once:
+  // initialize the LED pin as an output:
+  pinMode(LED_PIN, OUTPUT);
+  // initialize the pushbutton pin as an pull-up input:
+  // the pull-up input pin will be HIGH when the switch is open and LOW when the switch is closed.
+ 
+sensors.begin();
+ Serial.begin(9600);
+ lcd.begin ();
+ lcd.backlight();
+  lcd.setCursor(0,1);
+  lcd.print("Timer");
 
- sensors.begin();
-  pinMode(3, OUTPUT);
-  analogWrite(3, 0);
-  Serial.begin(9600);
 
-  lcd.begin (16,2);
+
 }
 
+
 void loop() {
-  // put your main code here, to run repeatedly:
-  sensors.requestTemperatures();
+  // read the state of the pushbutton value:
+ 
+    // control LED according to temp
+  if(tempVal > 75)         // If temp>75
+    digitalWrite(LED_PIN, HIGH); // turn on LED
+  else                           // If below 75
+    digitalWrite(LED_PIN, LOW); // turn off LED
+
+  sensors.requestTemperatures(); 
+  tempVal = sensors.getTempFByIndex(0);
+  lcd.setCursor(0,0);
+  lcd.print("Temp: ");
+  lcd.print(tempVal);
+  lcd.print((char)223);
+
+   delay(1000);
+
+   // if(tempVal == setPoint) { do stuff }
+
+  lcd.setCursor(0,1);
+  lcd.print("Timer:");
+
+if (digitalRead(tempVal) < 75);{
+ startTime == millis();
+ timerMode++;
+ delay(400);
+   lcd.setCursor(8,1);
+}
+ 
+ if (timerMode > 75){
+  delay(2000);
+  timerMode = 0;
+  lcd.setCursor(0, 1);
+  lcd.clear();
+  lcd.print("Not at des temp");
 
 
- tempC = sensors.getTempCByIndex(0);
-  tempF = sensors.toFahrenheit(tempC);
-  delay(1000);
- Serial.println(tempF);
+}
+if (digitalRead(tempVal) < 75);{
+    digitalWrite(BUZZER_PIN, HIGH); // turn on
+  }
 
-lcd.setCursor (0,0);
-lcd.print ("Arduino");
-delay (1500);
-lcd.setCursor (0,1);
-lcd.print (" Sous Vide") ;  
-delay (2000);
-lcd.clear();
-delay (3000);
+  if (tempVal > 75);  {
+    digitalWrite(BUZZER_PIN, LOW);  // turn off
+}
 }
