@@ -1,6 +1,6 @@
 #include <LiquidCrystal_I2C.h>
 #include<EEPROM.h>
-#include <Wire.h> 
+#include <Wire.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #define ONE_WIRE_BUS 8       //Temp sensor data wire will be connected to DP 8
@@ -10,11 +10,12 @@ LiquidCrystal_I2C lcd(0x3f, 16, 2);
 float tempC = 0;
 float tempF = 0;
 int tempVal = 0;
+int buzzerer = 9;
 const int stsp = A0;
 const int inc = A1;
 const int dec = A2;
 const int set = A3;
-const int buzz = 9;
+const int buzzer = 9;
 const int relay = 8;
 int hrs = 0;
 int Min = 0;
@@ -28,10 +29,10 @@ bool min_flag = true;
 bool hrs_flag = true;
 void setup()
 {
-   sensors.begin();
+  sensors.begin();
   Serial.begin(9600);
 
-   lcd.init();
+  lcd.init();
   // Print a message to the LCD.
   lcd.backlight();
 
@@ -41,10 +42,10 @@ void setup()
   pinMode(inc, INPUT_PULLUP);
   pinMode(dec, INPUT_PULLUP);
   pinMode(set, INPUT_PULLUP);
-  pinMode(buzz, OUTPUT);
+  pinMode(buzzer, OUTPUT);
   pinMode(relay, OUTPUT);
-  digitalWrite(relay, LOW); 
-  digitalWrite(buzz, LOW);
+  digitalWrite(relay, LOW);
+  digitalWrite(buzzer, LOW);
   if (EEPROM.read(add_chk) != check_val)
   {
     EEPROM.write(add_chk, check_val);
@@ -62,30 +63,46 @@ void setup()
 
 void loop()
 {
-sensors.requestTemperatures();
+
+ tone(buzzer, 1000, 10000);
+
+    delay(1000);
+
+    noTone(buzzer);
+
+    tone(buzzerer, 800, 10000);
+
+    delay(1000);
+
+    noTone(buzzer);
+
+    
+  
+  sensors.requestTemperatures();
   tempVal = sensors.getTempFByIndex(0);
   lcd.setCursor(0, 0);
   lcd.print("Temp: ");
   lcd.print(tempVal);
   lcd.print((char)223);
-  if (tempVal > 77) 
+  if (tempVal > 77)
   {
     lcd.clear();
     delay(250);
     RUN = true;
+
+    lcd.setCursor(0, 0);
+    lcd.print("    Temp: ");
+    lcd.print(tempVal);
+    lcd.print((char)223);
     
-  lcd.setCursor(0,0);
-  lcd.print("    Temp: ");
-  lcd.print(tempVal);
-  lcd.print((char)223);
     while (RUN)
     {
       if (tempVal < 77)
       {
         delay(1000);
-         if (tempVal > 77) 
+        if (tempVal > 77)
         {
-          digitalWrite(relay, LOW); 
+          digitalWrite(relay, LOW);
           lcd.clear();
           lcd.setCursor(0, 1);
           lcd.print("  TIMER STOPPED");
@@ -95,7 +112,7 @@ sensors.requestTemperatures();
           break;
         }
       }
-      digitalWrite(relay, HIGH); 
+      digitalWrite(relay, HIGH);
       sec = sec - 1;
       delay(1000);
       if (sec == -1)
@@ -129,14 +146,14 @@ sensors.requestTemperatures();
       lcd.print(sec);
       if (hrs == 0 && Min == 0 && sec == 0)
       {
-        digitalWrite(relay, LOW); 
+        digitalWrite(relay, LOW);
         lcd.setCursor(4, 1);
         RUN = false;
         for (int i = 0; i < 20; i++)
         {
-          digitalWrite(buzz, HIGH);
+          digitalWrite(buzzer, HIGH);
           delay(100);
-          digitalWrite(buzz, LOW);
+          digitalWrite(buzzer, LOW);
           delay(100);
         }
         INIT();
@@ -207,7 +224,7 @@ sensors.requestTemperatures();
     {
       EEPROM.write(add_hrs, hrs);
       EEPROM.write(add_min, Min);
- }
+    }
     INIT();
   }
 }
@@ -240,4 +257,22 @@ void INIT()
   hrs_flag = true;
   delay(500);
 
+  if (tempVal < 77); {
+    digitalWrite(buzzer, HIGH);
+    tone(buzzer, 1000, 10000);
+
+    delay(1000);
+
+    noTone(buzzer);
+
+    tone(buzzerer, 800, 10000);
+
+    delay(1000);
+
+    noTone(buzzer);
+  }
+  if  (tempVal > 77) {
+    digitalWrite(buzzer, LOW);  // turn off
+  }
 }
+
