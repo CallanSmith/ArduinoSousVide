@@ -1,85 +1,243 @@
-float tempC = 0;
-float tempF = 0;
-int tempVal = 0;
-long startTime;
-const int LED_PIN =  13;   // the number of the LED pin
-int timerMode = 0;
-const int BUZZER_PIN = 9;
 #include <LiquidCrystal_I2C.h>
+#include<EEPROM.h>
 #include <Wire.h> 
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #define ONE_WIRE_BUS 8       //Temp sensor data wire will be connected to DP 8
 OneWire oneWire(ONE_WIRE_BUS);
-
 DallasTemperature sensors(&oneWire);
-
 LiquidCrystal_I2C lcd(0x3f, 16, 2);
+float tempC = 0;
+float tempF = 0;
+int tempVal = 0;
+const int stsp = A0;
+const int inc = A1;
+const int dec = A2;
+const int set = A3;
+const int buzz = 9;
+const int relay = 8;
+int hrs = 0;
+int Min = 0;
+int sec = 0;
+unsigned int check_val = 50;
+int add_chk = 0;
+int add_hrs = 1;
+int add_min = 2;
+bool RUN = true;
+bool min_flag = true;
+bool hrs_flag = true;
+void setup()
+{
+   sensors.begin();
+  Serial.begin(9600);
 
-// variables will change:
+   lcd.init();
+  // Print a message to the LCD.
+  lcd.backlight();
 
-void setup() {
-  // initialize the LED pin as an output:
-  pinMode(LED_PIN, OUTPUT);
-  // initialize the pushbutton pin as an pull-up input:
-  // the pull-up input pin will be HIGH when the switch is open and LOW when the switch is closed.
- 
-sensors.begin();
- Serial.begin(9600);
- lcd.begin ();
- lcd.backlight();
-  lcd.setCursor(0,1);
-  lcd.print("Timer");
-
-
-
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  pinMode(stsp, INPUT_PULLUP);
+  pinMode(inc, INPUT_PULLUP);
+  pinMode(dec, INPUT_PULLUP);
+  pinMode(set, INPUT_PULLUP);
+  pinMode(buzz, OUTPUT);
+  pinMode(relay, OUTPUT);
+  digitalWrite(relay, LOW); 
+  digitalWrite(buzz, LOW);
+  if (EEPROM.read(add_chk) != check_val)
+  {
+    EEPROM.write(add_chk, check_val);
+    EEPROM.write(add_hrs, 0);
+    EEPROM.write(add_min, 1);
+  }
+  else
+  {
+    hrs = EEPROM.read(add_hrs);
+    Min = EEPROM.read(add_min);
+  }
+  delay(1500);
+  INIT();
 }
 
-
-void loop() {
-  // read the state of the pushbutton value:
- 
-    // control LED according to temp
-  if(tempVal > 75)         // If temp>75
-    digitalWrite(LED_PIN, HIGH); // turn on LED
-  else                           // If below 75
-    digitalWrite(LED_PIN, LOW); // turn off LED
-
-  sensors.requestTemperatures(); 
+void loop()
+{
+sensors.requestTemperatures();
   tempVal = sensors.getTempFByIndex(0);
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("Temp: ");
   lcd.print(tempVal);
   lcd.print((char)223);
-
-   delay(1000);
-
-   // if(tempVal == setPoint) { do stuff }
-
-  lcd.setCursor(0,1);
-  lcd.print("Timer:");
-
-if (digitalRead(tempVal) < 75);{
- startTime == millis();
- timerMode++;
- delay(400);
-   lcd.setCursor(8,1);
-}
- 
- if (timerMode > 75){
-  delay(2000);
-  timerMode = 0;
-  lcd.setCursor(0, 1);
-  lcd.clear();
-  lcd.print("Not at des temp");
-
-
-}
-if (digitalRead(tempVal) < 75);{
-    digitalWrite(BUZZER_PIN, HIGH); // turn on
+  if (tempVal > 77) 
+  {
+    lcd.clear();
+    delay(250);
+    RUN = true;
+    
+  lcd.setCursor(0,0);
+  lcd.print("    Temp: ");
+  lcd.print(tempVal);
+  lcd.print((char)223);
+    while (RUN)
+    {
+      if (tempVal < 77)
+      {
+        delay(1000);
+         if (tempVal > 77) 
+        {
+          digitalWrite(relay, LOW); 
+          lcd.clear();
+          lcd.setCursor(0, 1);
+          lcd.print("  TIMER STOPPED");
+          delay(2000);
+          RUN = false;
+          INIT();
+          break;
+        }
+      }
+      digitalWrite(relay, HIGH); 
+      sec = sec - 1;
+      delay(1000);
+      if (sec == -1)
+      {
+        sec = 59;
+        Min = Min - 1;
+      }
+      if (Min == -1)
+      {
+        Min = 59;
+        hrs = hrs - 1;
+      }
+      if (hrs == -1) hrs = 0;
+      lcd.setCursor(4, 1);
+      if (hrs <= 9)
+      {
+        lcd.print('0');
+      }
+      lcd.print(hrs);
+      lcd.print(':');
+      if (Min <= 9)
+      {
+        lcd.print('0');
+      }
+      lcd.print(Min);
+      lcd.print(':');
+      if (sec <= 9)
+      {
+        lcd.print('0');
+      }
+      lcd.print(sec);
+      if (hrs == 0 && Min == 0 && sec == 0)
+      {
+        digitalWrite(relay, LOW); 
+        lcd.setCursor(4, 1);
+        RUN = false;
+        for (int i = 0; i < 20; i++)
+        {
+          digitalWrite(buzz, HIGH);
+          delay(100);
+          digitalWrite(buzz, LOW);
+          delay(100);
+        }
+        INIT();
+      }
+    }
   }
-
-  if (tempVal > 75);  {
-    digitalWrite(BUZZER_PIN, LOW);  // turn off
+  if (digitalRead(set) == LOW)
+  {
+    delay(500);
+    while (min_flag)
+    {
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("SET MINUTE: ");
+      lcd.print(Min);
+      delay(100);
+      if (digitalRead(inc) == LOW)
+      {
+        Min = Min + 1;
+        if (Min >= 60) Min = 0;
+        delay(100);
+      }
+      if (digitalRead(dec) == LOW)
+      {
+        Min = Min - 1;
+        if (Min <= -1) Min = 0;
+        delay(100);
+      }
+      if (digitalRead(set) == LOW)
+      {
+        min_flag = false;
+        delay(250);
+      }
+    }
+    while (hrs_flag)
+    {
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("SET HOUR: ");
+      lcd.print(hrs);
+      delay(100);
+      if (digitalRead(inc) == LOW)
+      {
+        hrs = hrs + 1;
+        if (hrs > 23) hrs = 0;
+        delay(100);
+      }
+      if (digitalRead(dec) == LOW)
+      {
+        hrs = hrs - 1;
+        if (hrs <= -1) hrs = 0;
+        delay(100);
+      }
+      if (digitalRead(set) == LOW)
+      {
+        hrs_flag = false;
+        delay(250);
+      }
+    }
+    if (hrs == 0 && Min == 0)
+    {
+      lcd.clear();
+      lcd.setCursor(0, 1);
+      lcd.print("  INVAID TIME");
+      delay(2000);
+    }
+    else
+    {
+      EEPROM.write(add_hrs, hrs);
+      EEPROM.write(add_min, Min);
+ }
+    INIT();
+  }
 }
+
+void INIT()
+{
+  hrs = EEPROM.read(add_hrs);
+  Min = EEPROM.read(add_min);
+  sec = 0;
+  lcd.clear();
+  lcd.setCursor(4, 1);
+  if (hrs <= 9)
+  {
+    lcd.print('0');
+  }
+  lcd.print(hrs);
+  lcd.print(':');
+  if (Min <= 9)
+  {
+    lcd.print('0');
+  }
+  lcd.print(Min);
+  lcd.print(':');
+  if (sec <= 9)
+  {
+    lcd.print('0');
+  }
+  lcd.print(sec);
+  min_flag = true;
+  hrs_flag = true;
+  delay(500);
+
 }
