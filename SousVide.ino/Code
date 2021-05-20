@@ -27,14 +27,15 @@ int add_min = 2;
 bool RUN = true;
 bool min_flag = true;
 bool hrs_flag = true;
-void setup()
-{
+int potPin = 0;  // analog pin used to connect the potentiometer
+int potVal;  // variable to read the value from the analog pin
+void setup() {
+  // put your setup code here, to run once:
   sensors.begin();
   Serial.begin(9600);
-
   lcd.init();
-  // Print a message to the LCD.
   lcd.backlight();
+
 
   lcd.clear();
   lcd.setCursor(0, 0);
@@ -60,47 +61,42 @@ void setup()
   delay(1500);
   INIT();
 }
+void loop() {
+  // put your main code here, to run repeatedly:
 
-void loop()
-{
 
- tone(buzzer, 1000, 10000);
 
-    delay(1000);
-
-    noTone(buzzer);
-
-    tone(buzzerer, 800, 10000);
-
-    delay(1000);
-
-    noTone(buzzer);
-
-    
-  
+potVal = analogRead(potPin);
+potVal = map(potVal, 0, 1023, 77, 165);
   sensors.requestTemperatures();
   tempVal = sensors.getTempFByIndex(0);
-  lcd.setCursor(0, 0);
-  lcd.print("Temp: ");
-  lcd.print(tempVal);
-  lcd.print((char)223);
-  if (tempVal > 77)
+lcd.setCursor(0,0);
+lcd.print("Temp: ");
+lcd.setCursor(6,0);
+lcd.print(tempVal);
+lcd.print((char)223);
+lcd.setCursor(11,0);
+lcd.print(potVal);
+
+  if (tempVal >= potVal)
   {
     lcd.clear();
     delay(250);
     RUN = true;
 
     lcd.setCursor(0, 0);
-    lcd.print("    Temp: ");
+    lcd.print("Temp: ");
     lcd.print(tempVal);
     lcd.print((char)223);
-    
+    lcd.setCursor(11,0);
+    lcd.print(potVal);
+
     while (RUN)
     {
-      if (tempVal < 77)
+      if (tempVal < potVal)
       {
         delay(1000);
-        if (tempVal > 77)
+        if (tempVal >= potVal + 5)
         {
           digitalWrite(relay, LOW);
           lcd.clear();
