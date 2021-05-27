@@ -39,3 +39,6 @@ I made a final box that has connecters and has the correct demensions and should
  
  ###  "When I return from Spring break
 I will add a piezo buzzer to the temp sesnor, so it will be able to alert the user when their deeisred tempature has been reached, and when the timer is up.
+
+### Onshape completion assembly & final box finished early may, documented 5/27
+The box after lots of changes and refining was finished and laser cut and even though there had to be two changes that were made manually after it was laser cut I felt that I did a fairly good job in the design and the final product, while not perfect works well enough now that it has been all assembled.
