@@ -64,3 +64,8 @@ The box after lots of changes and refining was finished and laser cut and even t
  * Arduino formatting shield
  * Adequate amount of wires, screws, nuts and bolts
  
+ ### Pictures of the wiring ( May remove if the tinkercad is all that is needed)
+ <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/AE835A2F-9C50-41BB-BD21-E07B482C6B25.jpeg" width="500">
+ <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/F471624F-3F76-4946-866B-88272779F581.jpeg" width="500">
+ <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/640CB20B-0FCE-45F9-ADB5-42D512177292.jpeg" width="500">
+ <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/4286B375-801A-43B0-BF94-78FC52F3B8CB.jpeg" width="500">
