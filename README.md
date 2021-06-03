@@ -48,3 +48,6 @@ The box after lots of changes and refining was finished and laser cut and even t
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Assembly%202.PNG" width="500">
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Final%20box%20%232.PNG" width="500">
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Final%20box.PNG" width="500">
+
+### The link to the code for the Sous Vide tempature sensor as of 6/3
+[Link to the full code](https://github.com/CallanSmith/ArduinoSousVide/blob/main/SousVide.ino/Code)
