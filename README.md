@@ -51,3 +51,16 @@ The box after lots of changes and refining was finished and laser cut and even t
 
 ### The link to the code for the Sous Vide tempature sensor as of 6/3
 [Link to the full code](https://github.com/CallanSmith/ArduinoSousVide/blob/main/SousVide.ino/Code)
+
+### Materials List
+ * One Button
+ * One Piezo Buzzer
+ * One Potentiometer + washer 
+ * One Breadboard
+ * One Lcd with Backpack
+ * One tempature sensor
+ * 4 Arduino stands
+ * 6 laser cut walls, two bottom/top, two sides(same size), other sides(same size)
+ * Arduino formatting shield
+ * Adequate amount of wires, screws, nuts and bolts
+ 
