@@ -3,48 +3,54 @@
 #include <Wire.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+
 #define ONE_WIRE_BUS 8       //Temp sensor data wire will be connected to DP 8
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 LiquidCrystal_I2C lcd(0x3f, 16, 2);
-float tempC = 0;
-float tempF = 0;
-int tempVal = 0;
-int buzzerer = 9;
-const int stsp = A0;
-const int inc = A1;
-const int dec = A2;
-const int set = A3;
+
+
+
 const int buzzer = 9;
 const int relay = 8;
-int hrs = 0;
-int Min = 0;
-int sec = 0;
+int potPin = 0;  // analog pin used to connect the potentiometer
+int potVal;  // variable to read the value from the analog pin
+int buttonPin = 3;
+
+long hrs = 0;
+long Min = 0;
+long sec = 0;
+long startTime = 0;
+long timeleft = 0;
+long timeleftAlpha = 0;
 unsigned int check_val = 50;
 int add_chk = 0;
 int add_hrs = 1;
 int add_min = 2;
+bool timer = true;
 bool RUN = true;
 bool min_flag = true;
 bool hrs_flag = true;
-int potPin = 0;  // analog pin used to connect the potentiometer
-int potVal;  // variable to read the value from the analog pin
+float tempC = 0;  // Necesary for code to display temperature in
+float tempF = 0; 
+int tempVal = 0;
+
+
 void setup() {
   // put your setup code here, to run once:
-  sensors.begin();
-  Serial.begin(9600);
+  sensors.begin();  // Temperature sensor begin
+
+  Serial.begin(9600); 
+
   lcd.init();
-  lcd.backlight();
+  lcd.backlight();  // Turns on LCD
+  
 
+  pinMode(buttonPin, INPUT_PULLUP);
 
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  pinMode(stsp, INPUT_PULLUP);
-  pinMode(inc, INPUT_PULLUP);
-  pinMode(dec, INPUT_PULLUP);
-  pinMode(set, INPUT_PULLUP);
   pinMode(buzzer, OUTPUT);
   pinMode(relay, OUTPUT);
+
   digitalWrite(relay, LOW);
   digitalWrite(buzzer, LOW);
   if (EEPROM.read(add_chk) != check_val)
@@ -60,86 +66,173 @@ void setup() {
   }
   delay(1500);
   INIT();
+  lcd.clear();
 }
+
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  potVal = analogRead(potPin);
+  potVal = map(potVal, 0, 1023, 75, 165); // Setting up Potentiometer to display desired temp
+  sensors.requestTemperatures(); // Retriving temperatures from temp sesnor
+  tempVal = sensors.getTempFByIndex(0); // Stating that TempVal variable = tempeature retrived from temp sesnor
 
 
 
-potVal = analogRead(potPin);
-potVal = map(potVal, 0, 1023, 77, 165);
+  while (timer == true) { // When Timer is running
+
+    potVal = analogRead(potPin); 
+
+    while (min_flag)    { // Puts LCD into setup mode for Min
+      potVal = analogRead(potPin);
+      Min = map(potVal, 0, 1023, 0, 59); // Have potentiometer value between 0-59 for set minutes
+      lcd.setCursor(0, 0);
+      lcd.print("SET MINUTES: ");
+      lcd.setCursor(6, 1);
+      lcd.print(Min); // Print Min value controlled by potetntiometer
+      lcd.print(" ");
+
+      if ( digitalRead(buttonPin) == HIGH)
+      {
+        min_flag = false; // When button is pressed, kick out of Set Min into set hrs
+      }
+      delay(250);
+    }
+    while (hrs_flag) // Puts LCD into setup mode for hrs
+    {
+      delay(250);
+      potVal = analogRead(potPin);
+      hrs = map(potVal, 0, 1023, 0, 15);// Have potentiometer value between 0-15 for set hours
+      lcd.setCursor(0, 0);
+      lcd.print("SET  HOURS: ");
+      lcd.setCursor(6, 1);
+      lcd.print(hrs); // Print hrs value controlled by potentiometer.
+      lcd.print(" ");
+
+      if ( digitalRead(buttonPin) == HIGH)
+      {
+        hrs_flag = false; // When button is pressed again, kick out of set Min to timer 
+      }
+    }
+
+    if (hrs == 0 && Min == 0) // if timer is set to 0 hours and minutes, clear lcd and print INVALID TIME
+    {
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print(" INVALID TIME");
+      delay(2000);
+      hrs_flag = true;
+      min_flag = true;
+    }
+    else
+    {
+      lcd.clear();         // if invalid time is not entered, then print Please set desired temp, allows user to then set desrierd temp using Potentiometer
+      lcd.setCursor(0, 0);
+      lcd.print("Please set");
+      lcd.setCursor(0, 1);
+      lcd.print("desired temp.");
+      delay(2000);
+      EEPROM.write(add_hrs, hrs);
+      EEPROM.write(add_min, Min);
+      timer = false;
+      startTime = millis();
+      timeleftAlpha = ((hrs * 3600000) + (Min * 60000));
+      Serial.println(startTime); // once temp is set, go on to timer screen
+    }
+    INIT();
+  }
+
+  // Timer is done, switch to Temp Mode
+  potVal = analogRead(potPin);
+  potVal = map(potVal, 0, 1023, 75, 165);
   sensors.requestTemperatures();
   tempVal = sensors.getTempFByIndex(0);
-lcd.setCursor(0,0);
-lcd.print("Temp: ");
-lcd.setCursor(6,0);
-lcd.print(tempVal);
-lcd.print((char)223);
-lcd.setCursor(11,0);
-lcd.print(potVal);
 
-  if (tempVal >= potVal)
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: ");
+  lcd.print(tempVal);
+  lcd.print((char)223);
+  lcd.setCursor(0, 1);
+  lcd.print("Setpoint: ");
+  lcd.print(potVal);   //mapped potVal is now "setpoint"
+  lcd.print((char)223);
+
+  tempAlarm(); //check if temp has gone too high and use buzzer to warn human
+
+  // we stay in temp mode until temperature rises to setpoint.
+  //once this occurs, we start the timer.
+
+  if (tempVal >= potVal) // if temperature value if greater than or equal to desired temp (potVal) 
   {
-    lcd.clear();
-    delay(250);
-    RUN = true;
-
+    lcd.clear();     
     lcd.setCursor(0, 0);
     lcd.print("Temp: ");
     lcd.print(tempVal);
-    lcd.print((char)223);
-    lcd.setCursor(11,0);
-    lcd.print(potVal);
+    lcd.print((char)223);  // Once tempVal >= potVal then it prints temp
+    lcd.setCursor(11, 0);
+    lcd.print(potVal);      // Once tempVal >= potVal then it prints set temp/desired temp
+    lcd.print(" "); 
 
-    while (RUN)
-    {
-      if (tempVal < potVal)
-      {
-        delay(1000);
-        if (tempVal >= potVal + 5)
-        {
-          digitalWrite(relay, LOW);
-          lcd.clear();
-          lcd.setCursor(0, 1);
-          lcd.print("  TIMER STOPPED");
-          delay(2000);
-          RUN = false;
-          INIT();
-          break;
-        }
-      }
-      digitalWrite(relay, HIGH);
-      sec = sec - 1;
-      delay(1000);
-      if (sec == -1)
-      {
-        sec = 59;
-        Min = Min - 1;
-      }
-      if (Min == -1)
-      {
-        Min = 59;
-        hrs = hrs - 1;
-      }
-      if (hrs == -1) hrs = 0;
-      lcd.setCursor(4, 1);
-      if (hrs <= 9)
-      {
-        lcd.print('0');
-      }
+    RUN = true;  // Once tempVal >= potVal then timer starts
+
+    //  MAJOR ISSUE:   You must include all information you want INSIDE this while, if you want it to run while the "while" is running.
+    //  MAJOR ISSUE:   You do not have your potVal or tempVal variables being re-read in here.  I'd suggest copying them from above in void loop
+    //  MAJOR ISSUE:   down into this while, and any other while you may want to display temps.
+
+    while (RUN) { // while timer is running
+      potVal = analogRead(potPin);
+      potVal = map(potVal, 0, 1023, 72, 165); // User will be able to change desired/set temp while timer is runnning, so you can change temperature of what you are cooking whilst the timer is stil running
+      sensors.requestTemperatures(); 
+      tempVal = sensors.getTempFByIndex(0);//Grabbing tempVal so it can be displayed whilst the timer is going
+
+      lcd.setCursor(0, 0);
+      lcd.print("Temp: ");
+      lcd.print(tempVal);
+      lcd.print((char)223); // print tempVal whilst timer is going
+      lcd.print(" ");
+      lcd.print(potVal);   //mapped potVal is now "setpoint"
+      lcd.print((char)223);
+
+      Serial.print("timeTotal:");// start of actual timer code
+      Serial.print(timeleftAlpha);
+      Serial.print("\t timeleft:");
+      timeleft = timeleftAlpha - millis() + startTime; // time that is printed= Orignal set time - time ran 
+      Serial.println(timeleft);
+
+      hrs = (timeleft / 3600000);
+      Min = ((timeleft / 60000) - (hrs * 60));
+      sec = ((timeleft / 1000) - ((hrs * 3600) + ( Min * 60)));
+      lcd.setCursor(0, 1);
       lcd.print(hrs);
       lcd.print(':');
-      if (Min <= 9)
-      {
-        lcd.print('0');
-      }
       lcd.print(Min);
       lcd.print(':');
-      if (sec <= 9)
-      {
-        lcd.print('0');
-      }
       lcd.print(sec);
+      lcd.print(':');
+
+
+
+
+
+
+
+
+      if (tempVal >= potVal + 10)
+      {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("TIMER STOPPED");
+        lcd.setCursor(0, 1);
+        lcd.print("Over heating");
+        delay(2000);
+        RUN = false;
+        INIT();
+        break;
+      }
+
+     
+
+
       if (hrs == 0 && Min == 0 && sec == 0)
       {
         digitalWrite(relay, LOW);
@@ -154,76 +247,22 @@ lcd.print(potVal);
         }
         INIT();
       }
+
     }
+
   }
-  if (digitalRead(set) == LOW)
-  {
-    delay(500);
-    while (min_flag)
-    {
-      lcd.clear();
-      lcd.setCursor(0, 1);
-      lcd.print("SET MINUTE: ");
-      lcd.print(Min);
-      delay(100);
-      if (digitalRead(inc) == LOW)
-      {
-        Min = Min + 1;
-        if (Min >= 60) Min = 0;
-        delay(100);
-      }
-      if (digitalRead(dec) == LOW)
-      {
-        Min = Min - 1;
-        if (Min <= -1) Min = 0;
-        delay(100);
-      }
-      if (digitalRead(set) == LOW)
-      {
-        min_flag = false;
-        delay(250);
-      }
-    }
-    while (hrs_flag)
-    {
-      lcd.clear();
-      lcd.setCursor(0, 1);
-      lcd.print("SET HOUR: ");
-      lcd.print(hrs);
-      delay(100);
-      if (digitalRead(inc) == LOW)
-      {
-        hrs = hrs + 1;
-        if (hrs > 23) hrs = 0;
-        delay(100);
-      }
-      if (digitalRead(dec) == LOW)
-      {
-        hrs = hrs - 1;
-        if (hrs <= -1) hrs = 0;
-        delay(100);
-      }
-      if (digitalRead(set) == LOW)
-      {
-        hrs_flag = false;
-        delay(250);
-      }
-    }
-    if (hrs == 0 && Min == 0)
-    {
-      lcd.clear();
-      lcd.setCursor(0, 1);
-      lcd.print("  INVAID TIME");
-      delay(2000);
-    }
-    else
-    {
-      EEPROM.write(add_hrs, hrs);
-      EEPROM.write(add_min, Min);
-    }
-    INIT();
-  }
+
 }
+/*
+// prepend a 0 to any number less than 9
+int printFunc(int t) {
+  if ( t > 9)
+    return t;
+  else
+    return "0" + t;
+}
+*/
+
 
 void INIT()
 {
@@ -249,26 +288,46 @@ void INIT()
     lcd.print('0');
   }
   lcd.print(sec);
+  lcd.print(" ");
+
   min_flag = true;
   hrs_flag = true;
   delay(500);
 
-  if (tempVal < 77); {
-    digitalWrite(buzzer, HIGH);
-    tone(buzzer, 1000, 10000);
-
-    delay(1000);
-
-    noTone(buzzer);
-
-    tone(buzzerer, 800, 10000);
-
-    delay(1000);
-
-    noTone(buzzer);
-  }
-  if  (tempVal > 77) {
-    digitalWrite(buzzer, LOW);  // turn off
-  }
 }
 
+
+void tempAlarm() {
+
+  if (tempVal >= potVal + 5) {
+    digitalWrite(buzzer, HIGH);
+    tone(buzzer, 1000, 10000);
+    delay(1000);
+    noTone(buzzer);
+    tone(buzzer, 800, 10000);
+    delay(1000);
+    noTone(buzzer);
+  }
+  else if (tempVal <= potVal + 4) {
+    digitalWrite(buzzer, LOW);  // turn off
+  }
+
+}
+
+
+// make a function for your LCD timer display code, like what is in the init()
+
+/*
+  while (true) {
+   int Hours = (( millis() / 1000 ) / 60) / 60;
+   int Minute = ( millis() / 1000 ) % 60;
+   int second = ( millis() / 1000 ) % 60;
+
+   lcd.setCursor(0, 0);
+   lcd.print(Minute);
+   lcd.print(":");
+   lcd.print(second);
+   lcd.print(" ");
+  }
+  }
+*/
