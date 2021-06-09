@@ -45,6 +45,10 @@ I will add a piezo buzzer to the temp sesnor, so it will be able to alert the us
 ### Onshape completion assembly & final box finished early may, documented 5/27
 The box after lots of changes and refining was finished and laser cut and even though there had to be two changes that were made manually after it was laser cut I felt that I did a fairly good job in the design and the final product, while not perfect works well enough now that it has been all assembled.
 
+###
+This was a picture of the final drawing that was used to laser cut the final box.
+<img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Cad%20drawing.PNG" width="500">
+
 ### The link to the code for the Sous Vide tempature sensor as of 6/3
 [Link to the full code](https://github.com/CallanSmith/ArduinoSousVide/blob/main/SousVide.ino/Code)
 
