@@ -23,6 +23,7 @@ I made a final box that has connecters and has the correct demensions and should
 <img src ="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/FinalBoxSousVide.PNG" width="500">
 
 ### This is a zoomed in version of the Prototype
+We quikcly relaized this design would make no sense and could not really work and would be very hard to put together so we quickly scraped it.
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/OnshapeProgress%231.PNG" width="500">
 
 ### Sous Vide progress
