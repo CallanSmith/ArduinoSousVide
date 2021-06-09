@@ -18,6 +18,7 @@ I am not totally sure whether we will be able to finish on time or not.
 
 I made a final box that has connecters and has the correct demensions and should be able to be printed.
 ### Pictures of the Current Onshape
+  These Pictures are of the origanal design for the box, however this design was quickly scraped for a newer version
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/zoomedoutversionof%231.PNG" width="500">
 <img src ="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/FinalBoxSousVide.PNG" width="500">
 
@@ -47,12 +48,14 @@ The box after lots of changes and refining was finished and laser cut and even t
 [Link to the full code](https://github.com/CallanSmith/ArduinoSousVide/blob/main/SousVide.ino/Code)
 
 ### Pictures of the wiring ( May remove if the tinkercad is all that is needed)
+   The wiring was fairly easy to do as most things had solutions online of where to put things however, we did have some diffuclty making sure the wires could all fit in the       box without disrupting eachother.
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/AE835A2F-9C50-41BB-BD21-E07B482C6B25.jpeg" width="500">
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/F471624F-3F76-4946-866B-88272779F581.jpeg" width="500">
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/640CB20B-0FCE-45F9-ADB5-42D512177292.jpeg" width="500">
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/4286B375-801A-43B0-BF94-78FC52F3B8CB.jpeg" width="500">
 
 ### Pictures of the Completed box
+ This was the design of the box we finally settled on after lots of tweaking and fiddiling to make sure we had all the parts we needed and places to fit and put them. Even though we had to edit a few things after it was laser cut the box seems to work as intended.
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Assembly%201.PNG" width="500">
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Assembly%202.PNG" width="500">
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Final%20box%20%232.PNG" width="500">
