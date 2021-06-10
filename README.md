@@ -1,5 +1,9 @@
 ## ArduinoSousVide Documentation 
 
+### Project Description.
+Our project was orginially intended to be a homemade SousVide using Arduino. A SousVide is a way to cook food to an exact temperature by placing the food in water that is at the exact  temperature that is desired for the food you are cooking. This allows the food you are cooking to virtually never be over cooked due to the temperature of the water never going above the desired temperature of your food. We quickly realized the heating element of the project would be near impossible in the time we had so we decieded to make a waterproof theremoter, with a built in timer. Our project is able to set a desired time and temperatue, and is able to start the set timer once the deisred temperature is reached. This can be used as a sous vide as long as the user has a heating element.
+
+
 ### Psuedo Code
 In Psuedocode.ino file
 #### Description
@@ -80,4 +84,9 @@ The box after lots of changes and refining was finished and laser cut and even t
 ## Coding Process 
 The first major coding problem I ran into was coding the temperature sensor. I came into the project with no knowledge of how to code this paticular sensor ([Link to sensor](https://www.adafruit.com/product/381)) but with these videos ([Helpfull wiring video](https://www.youtube.com/watch?v=lIpgGru2Wv0&t=115s), [Helpfull coding video](https://www.youtube.com/watch?v=hIkUQZuaTE4&t=399s)) I was able to figure out most of the coding and wiring. The most important things about coding the temperature sensor was inculding the dallas temperature library and the onewire library ([Dallas temp library](https://github.com/milesburton/Arduino-Temperature-Control-Library), [One wire library](https://github.com/PaulStoffregen/OneWire)) and figuring out how to grap and print the code from the sensor itself. I did this by requesting temp with "sensors.requestTemperatures();" and then making the temperatue from the sensor into a value. "tempVal = sensors.getTempFByIndex(0);".
 From there I could use the tempVal however I wanted.
+The next obstacle of the project coding wise was coding the timer. I orginally was using a countdown timer derived from a project using buttons as the input. I though if I could change the input to tempVal then the timer would work just the same. This however was wrong and the timer was very messy and unneccesarily long. After this the timer code was completly redone using some elements from the old code but also going off the basis of
+ hrs = (timeleft / 3600000);
+      Min = ((timeleft / 60000) - (hrs * 60));
+      sec = ((timeleft / 1000) - ((hrs * 3600) + ( Min * 60)));.
+
 
