@@ -78,8 +78,13 @@ The next obstacle of the project coding wise was coding the timer. I orginally w
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Final%20box%20%232.PNG" width="500">
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/Final%20box.PNG" width="500">
 
-### Materials List
- * One Button
+### Pictures of project working
+ ### This will show lcd in "set mintutes, "set hours", and when the timer is running.
+ <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/346CCECF-07A7-49CE-B14B-982FDBAB53C8.jpeg" width="500">
+ <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/4ACB5CF4-CCCE-41D4-9209-5A7BB1CBDE79.jpeg" width="500">
+ <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/78E86BF1-AD89-4775-8137-81455475BAAA.jpeg" width="500">
+
+* One Button
  * One Piezo Buzzer
  * One Potentiometer + washer 
  * One Breadboard
