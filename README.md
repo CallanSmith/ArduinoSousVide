@@ -65,7 +65,7 @@ The next obstacle of the project coding wise was coding the timer. I orginally w
 
 ### Pictures of the wiring 
    #### The wiring was fairly easy to do as most things had solutions online of where to put things however, we did have some diffuclty making sure the wires could all fit in the box without disrupting eachother.
- <img src="14A69878-8F72-4409-B98E-1497EADC917C.jpeg" width="500">
+ <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/14A69878-8F72-4409-B98E-1497EADC917C.jpeg" width="500">
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/F471624F-3F76-4946-866B-88272779F581.jpeg" width="500">
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/640CB20B-0FCE-45F9-ADB5-42D512177292.jpeg" width="500">
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/4286B375-801A-43B0-BF94-78FC52F3B8CB.jpeg" width="500">
