@@ -9,7 +9,7 @@ In Psuedocode.ino file
 #### Description
 The Psuedo code gives us a clear outline for the code, which will help greatly in the long run.
 
-### Onshape Link
+## Onshape Link
 [Onshape Link](https://cvilleschools.onshape.com/documents/c3962513f441d4007ffeae5e/w/b6f45b338eec284bfbfb06f5/e/f69b6bea835e3a074534029c)
 ### Onshape Progress
 3/1:
@@ -27,10 +27,10 @@ I made a final box that has connecters and has the correct demensions and should
 <img src ="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/FinalBoxSousVide.PNG" width="500">
 
 ### This is a zoomed in version of the Prototype
-  #### We quikcly realized this design would make no sense and could not really work and would be very hard to put together so we quickly scraped it.
+  #### We quickly realized this design would make no sense and could not really work and would be very hard to put together so we quickly scraped it.
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/OnshapeProgress%231.PNG" width="500">
 
-### Sous Vide progress
+## Sous Vide progress
 
 ### Picture of Temp sensor running
 <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/TempSensorWorking.png" width="500">
