@@ -55,7 +55,15 @@ The box after lots of changes and refining was finished and laser cut and even t
 ### The link to the code for the Sous Vide tempature sensor as of 6/3
 [Link to the full code](https://github.com/CallanSmith/ArduinoSousVide/blob/main/SousVide.ino/Code)
 
-### Pictures of the wiring ( May remove if the tinkercad is all that is needed)
+## Coding Process 
+The first major coding problem I ran into was coding the temperature sensor. I came into the project with no knowledge of how to code this paticular sensor ([Link to sensor](https://www.adafruit.com/product/381)) but with these videos ([Helpful wiring video](https://www.youtube.com/watch?v=lIpgGru2Wv0&t=115s), [Helpful coding video](https://www.youtube.com/watch?v=hIkUQZuaTE4&t=399s)) I was able to figure out most of the coding and wiring. The most important things about coding the temperature sensor was inculding the dallas temperature library and the onewire library ([Dallas temp library](https://github.com/milesburton/Arduino-Temperature-Control-Library), [One wire library](https://github.com/PaulStoffregen/OneWire)) and figuring out how to grap and print the code from the sensor itself. I did this by requesting temp with "sensors.requestTemperatures();" and then making the temperatue from the sensor into a value. "tempVal = sensors.getTempFByIndex(0);".
+From there I could use the tempVal however I wanted.
+The next obstacle of the project coding wise was coding the timer. I orginally was using a countdown timer derived from a project using buttons as the input. I though if I could change the input to tempVal then the timer would work just the same. This however was wrong and the timer was very messy and unneccesarily long. After this the timer code was completly redone using some elements from the old code but also going off the basis of
+ hrs = (timeleft / 3600000);
+      Min = ((timeleft / 60000) - (hrs * 60));
+      sec = ((timeleft / 1000) - ((hrs * 3600) + ( Min * 60)));.
+
+### Pictures of the wiring (Outdated)
    #### The wiring was fairly easy to do as most things had solutions online of where to put things however, we did have some diffuclty making sure the wires could all fit in the box without disrupting eachother.
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/AE835A2F-9C50-41BB-BD21-E07B482C6B25.jpeg" width="500">
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/F471624F-3F76-4946-866B-88272779F581.jpeg" width="500">
@@ -80,13 +88,3 @@ The box after lots of changes and refining was finished and laser cut and even t
  * 6 laser cut walls, two bottom/top, two sides(same size), other sides(same size)
  * Arduino formatting shield
  * Adequate amount of wires, screws, nuts and bolts
-
-## Coding Process 
-The first major coding problem I ran into was coding the temperature sensor. I came into the project with no knowledge of how to code this paticular sensor ([Link to sensor](https://www.adafruit.com/product/381)) but with these videos ([Helpful wiring video](https://www.youtube.com/watch?v=lIpgGru2Wv0&t=115s), [Helpful coding video](https://www.youtube.com/watch?v=hIkUQZuaTE4&t=399s)) I was able to figure out most of the coding and wiring. The most important things about coding the temperature sensor was inculding the dallas temperature library and the onewire library ([Dallas temp library](https://github.com/milesburton/Arduino-Temperature-Control-Library), [One wire library](https://github.com/PaulStoffregen/OneWire)) and figuring out how to grap and print the code from the sensor itself. I did this by requesting temp with "sensors.requestTemperatures();" and then making the temperatue from the sensor into a value. "tempVal = sensors.getTempFByIndex(0);".
-From there I could use the tempVal however I wanted.
-The next obstacle of the project coding wise was coding the timer. I orginally was using a countdown timer derived from a project using buttons as the input. I though if I could change the input to tempVal then the timer would work just the same. This however was wrong and the timer was very messy and unneccesarily long. After this the timer code was completly redone using some elements from the old code but also going off the basis of
- hrs = (timeleft / 3600000);
-      Min = ((timeleft / 60000) - (hrs * 60));
-      sec = ((timeleft / 1000) - ((hrs * 3600) + ( Min * 60)));.
-
-
