@@ -2,6 +2,7 @@
 
 ### Project Description.
 Our project was orginially intended to be a homemade SousVide using Arduino. A SousVide is a way to cook food to an exact temperature by placing the food in water that is at the exact  temperature that is desired for the food you are cooking. This allows the food you are cooking to virtually never be over cooked due to the temperature of the water never going above the desired temperature of your food. We quickly realized the heating element of the project would be near impossible in the time we had so we decieded to make a waterproof theremoter, with a built in timer. Our project is able to set a desired time and temperatue, and is able to start the set timer once the deisred temperature is reached. This can be used as a sous vide as long as the user has a heating element.
+The way you set time is by turning the potentiometer. The potentiometer ranges in between 0-60 for minutes, and 0-15 for hours. There is a button to switch between set hours, set minutes, and start time. Once the set temperature is reached, the timer starts. Once the timer is done, a piezzo buzzer will sound.
 
 
 ### Psuedo Code
@@ -84,6 +85,7 @@ The next obstacle of the project coding wise was coding the timer. I orginally w
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/4ACB5CF4-CCCE-41D4-9209-5A7BB1CBDE79.jpeg" width="500">
  <img src="https://github.com/CallanSmith/ArduinoSousVide/blob/main/images/78E86BF1-AD89-4775-8137-81455475BAAA.jpeg" width="500">
 
+### Matierals list
 * One Button
  * One Piezo Buzzer
  * One Potentiometer + washer 
