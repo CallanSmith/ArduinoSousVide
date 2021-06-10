@@ -214,7 +214,10 @@ void loop() {
         lcd.print("TIMER STOPPED");
         lcd.setCursor(0, 1);
         lcd.print("Over heating");
-
+        tone(buzzer, 1000);  // buzzer on when timer done
+        delay(1000);
+        noTone(buzzer);
+        delay(1000);
         RUN = false; // timer stop, then go back to normal screen once not overheating
         INIT();
         break;
